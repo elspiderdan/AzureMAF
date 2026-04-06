@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "dgSpecHash": "AoTqpLu1yKw=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\cg_da\\OneDrive\\Documentos\\PROYECTOS\\NET\\MAFPRO\\MAFPRO.Api\\MAFPRO.Api.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\cg_da\\.nuget\\packages\\microsoft.aspnetcore.openapi\\10.0.5\\microsoft.aspnetcore.openapi.10.0.5.nupkg.sha512",
+    "C:\\Users\\cg_da\\.nuget\\packages\\microsoft.openapi\\2.0.0\\microsoft.openapi.2.0.0.nupkg.sha512",
+    "C:\\Users\\cg_da\\.nuget\\packages\\opentelemetry\\1.15.1\\opentelemetry.1.15.1.nupkg.sha512",
+    "C:\\Users\\cg_da\\.nuget\\packages\\opentelemetry.api\\1.15.1\\opentelemetry.api.1.15.1.nupkg.sha512",
+    "C:\\Users\\cg_da\\.nuget\\packages\\opentelemetry.api.providerbuilderextensions\\1.15.1\\opentelemetry.api.providerbuilderextensions.1.15.1.nupkg.sha512",
+    "C:\\Users\\cg_da\\.nuget\\packages\\opentelemetry.exporter.console\\1.15.1\\opentelemetry.exporter.console.1.15.1.nupkg.sha512",
+    "C:\\Users\\cg_da\\.nuget\\packages\\opentelemetry.extensions.hosting\\1.15.1\\opentelemetry.extensions.hosting.1.15.1.nupkg.sha512",
+    "C:\\Users\\cg_da\\.nuget\\packages\\opentelemetry.instrumentation.aspnetcore\\1.15.1\\opentelemetry.instrumentation.aspnetcore.1.15.1.nupkg.sha512"
+  ],
+  "logs": []
+}
