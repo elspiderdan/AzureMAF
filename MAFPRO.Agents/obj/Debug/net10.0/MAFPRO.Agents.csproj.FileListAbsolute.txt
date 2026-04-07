@@ -1,0 +1,16 @@
+C:\Users\cg_da\OneDrive\Documentos\PROYECTOS\NET\AzureMAF\AzureMAF\MAFPRO.Agents\obj\Debug\net10.0\MAFPRO.Agents.csproj.AssemblyReference.cache
+C:\Users\cg_da\OneDrive\Documentos\PROYECTOS\NET\AzureMAF\AzureMAF\MAFPRO.Agents\obj\Debug\net10.0\MAFPRO.Agents.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\cg_da\OneDrive\Documentos\PROYECTOS\NET\AzureMAF\AzureMAF\MAFPRO.Agents\obj\Debug\net10.0\MAFPRO.Agents.AssemblyInfoInputs.cache
+C:\Users\cg_da\OneDrive\Documentos\PROYECTOS\NET\AzureMAF\AzureMAF\MAFPRO.Agents\obj\Debug\net10.0\MAFPRO.Agents.AssemblyInfo.cs
+C:\Users\cg_da\OneDrive\Documentos\PROYECTOS\NET\AzureMAF\AzureMAF\MAFPRO.Agents\obj\Debug\net10.0\MAFPRO.Agents.csproj.CoreCompileInputs.cache
+C:\Users\cg_da\OneDrive\Documentos\PROYECTOS\NET\AzureMAF\AzureMAF\MAFPRO.Agents\obj\Debug\net10.0\MAFPRO.Agents.sourcelink.json
+C:\Users\cg_da\OneDrive\Documentos\PROYECTOS\NET\AzureMAF\AzureMAF\MAFPRO.Agents\bin\Debug\net10.0\MAFPRO.Agents.deps.json
+C:\Users\cg_da\OneDrive\Documentos\PROYECTOS\NET\AzureMAF\AzureMAF\MAFPRO.Agents\bin\Debug\net10.0\MAFPRO.Agents.dll
+C:\Users\cg_da\OneDrive\Documentos\PROYECTOS\NET\AzureMAF\AzureMAF\MAFPRO.Agents\bin\Debug\net10.0\MAFPRO.Agents.pdb
+C:\Users\cg_da\OneDrive\Documentos\PROYECTOS\NET\AzureMAF\AzureMAF\MAFPRO.Agents\bin\Debug\net10.0\MAFPRO.Application.dll
+C:\Users\cg_da\OneDrive\Documentos\PROYECTOS\NET\AzureMAF\AzureMAF\MAFPRO.Agents\bin\Debug\net10.0\MAFPRO.Application.pdb
+C:\Users\cg_da\OneDrive\Documentos\PROYECTOS\NET\AzureMAF\AzureMAF\MAFPRO.Agents\obj\Debug\net10.0\MAFPRO.A.18386FFD.Up2Date
+C:\Users\cg_da\OneDrive\Documentos\PROYECTOS\NET\AzureMAF\AzureMAF\MAFPRO.Agents\obj\Debug\net10.0\MAFPRO.Agents.dll
+C:\Users\cg_da\OneDrive\Documentos\PROYECTOS\NET\AzureMAF\AzureMAF\MAFPRO.Agents\obj\Debug\net10.0\refint\MAFPRO.Agents.dll
+C:\Users\cg_da\OneDrive\Documentos\PROYECTOS\NET\AzureMAF\AzureMAF\MAFPRO.Agents\obj\Debug\net10.0\MAFPRO.Agents.pdb
+C:\Users\cg_da\OneDrive\Documentos\PROYECTOS\NET\AzureMAF\AzureMAF\MAFPRO.Agents\obj\Debug\net10.0\ref\MAFPRO.Agents.dll

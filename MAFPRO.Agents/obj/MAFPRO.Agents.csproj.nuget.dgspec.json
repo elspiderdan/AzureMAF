@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\cg_da\\OneDrive\\Documentos\\PROYECTOS\\NET\\MAFPRO\\MAFPRO.Agents\\MAFPRO.Agents.csproj": {}
+    "C:\\Users\\cg_da\\OneDrive\\Documentos\\PROYECTOS\\NET\\AzureMAF\\AzureMAF\\MAFPRO.Agents\\MAFPRO.Agents.csproj": {}
   },
   "projects": {
-    "C:\\Users\\cg_da\\OneDrive\\Documentos\\PROYECTOS\\NET\\MAFPRO\\MAFPRO.Agents\\MAFPRO.Agents.csproj": {
+    "C:\\Users\\cg_da\\OneDrive\\Documentos\\PROYECTOS\\NET\\AzureMAF\\AzureMAF\\MAFPRO.Agents\\MAFPRO.Agents.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\cg_da\\OneDrive\\Documentos\\PROYECTOS\\NET\\MAFPRO\\MAFPRO.Agents\\MAFPRO.Agents.csproj",
+        "projectUniqueName": "C:\\Users\\cg_da\\OneDrive\\Documentos\\PROYECTOS\\NET\\AzureMAF\\AzureMAF\\MAFPRO.Agents\\MAFPRO.Agents.csproj",
         "projectName": "MAFPRO.Agents",
-        "projectPath": "C:\\Users\\cg_da\\OneDrive\\Documentos\\PROYECTOS\\NET\\MAFPRO\\MAFPRO.Agents\\MAFPRO.Agents.csproj",
+        "projectPath": "C:\\Users\\cg_da\\OneDrive\\Documentos\\PROYECTOS\\NET\\AzureMAF\\AzureMAF\\MAFPRO.Agents\\MAFPRO.Agents.csproj",
         "packagesPath": "C:\\Users\\cg_da\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\cg_da\\OneDrive\\Documentos\\PROYECTOS\\NET\\MAFPRO\\MAFPRO.Agents\\obj\\",
+        "outputPath": "C:\\Users\\cg_da\\OneDrive\\Documentos\\PROYECTOS\\NET\\AzureMAF\\AzureMAF\\MAFPRO.Agents\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -32,8 +32,8 @@
           "net10.0": {
             "targetAlias": "net10.0",
             "projectReferences": {
-              "C:\\Users\\cg_da\\OneDrive\\Documentos\\PROYECTOS\\NET\\MAFPRO\\MAFPRO.Application\\MAFPRO.Application.csproj": {
-                "projectPath": "C:\\Users\\cg_da\\OneDrive\\Documentos\\PROYECTOS\\NET\\MAFPRO\\MAFPRO.Application\\MAFPRO.Application.csproj"
+              "C:\\Users\\cg_da\\OneDrive\\Documentos\\PROYECTOS\\NET\\AzureMAF\\AzureMAF\\MAFPRO.Application\\MAFPRO.Application.csproj": {
+                "projectPath": "C:\\Users\\cg_da\\OneDrive\\Documentos\\PROYECTOS\\NET\\AzureMAF\\AzureMAF\\MAFPRO.Application\\MAFPRO.Application.csproj"
               }
             }
           }
@@ -357,14 +357,14 @@
         }
       }
     },
-    "C:\\Users\\cg_da\\OneDrive\\Documentos\\PROYECTOS\\NET\\MAFPRO\\MAFPRO.Application\\MAFPRO.Application.csproj": {
+    "C:\\Users\\cg_da\\OneDrive\\Documentos\\PROYECTOS\\NET\\AzureMAF\\AzureMAF\\MAFPRO.Application\\MAFPRO.Application.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\cg_da\\OneDrive\\Documentos\\PROYECTOS\\NET\\MAFPRO\\MAFPRO.Application\\MAFPRO.Application.csproj",
+        "projectUniqueName": "C:\\Users\\cg_da\\OneDrive\\Documentos\\PROYECTOS\\NET\\AzureMAF\\AzureMAF\\MAFPRO.Application\\MAFPRO.Application.csproj",
         "projectName": "MAFPRO.Application",
-        "projectPath": "C:\\Users\\cg_da\\OneDrive\\Documentos\\PROYECTOS\\NET\\MAFPRO\\MAFPRO.Application\\MAFPRO.Application.csproj",
+        "projectPath": "C:\\Users\\cg_da\\OneDrive\\Documentos\\PROYECTOS\\NET\\AzureMAF\\AzureMAF\\MAFPRO.Application\\MAFPRO.Application.csproj",
         "packagesPath": "C:\\Users\\cg_da\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\cg_da\\OneDrive\\Documentos\\PROYECTOS\\NET\\MAFPRO\\MAFPRO.Application\\obj\\",
+        "outputPath": "C:\\Users\\cg_da\\OneDrive\\Documentos\\PROYECTOS\\NET\\AzureMAF\\AzureMAF\\MAFPRO.Application\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -402,6 +402,12 @@
       "frameworks": {
         "net10.0": {
           "targetAlias": "net10.0",
+          "dependencies": {
+            "Microsoft.Extensions.DependencyInjection": {
+              "target": "Package",
+              "version": "[10.0.5, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",

@@ -53,9 +53,9 @@ public class AgentOrchestrator : IAgentOrchestrator
         };
 
         // Call the AI
-        var response = await _chatClient.CompleteAsync(aiMessages, chatOptions, cancellationToken);
+        var response = await _chatClient.GetResponseAsync(aiMessages, chatOptions, cancellationToken);
 
-        var aiResponseMsg = new MAFPRO.Application.Models.Message { Id = Guid.NewGuid(), Role = "Assistant", Content = response.Message.Text ?? "", ConversationId = conversation.Id };
+        var aiResponseMsg = new MAFPRO.Application.Models.Message { Id = Guid.NewGuid(), Role = "Assistant", Content = response.Messages[0].Text ?? response.Text ?? "", ConversationId = conversation.Id };
         conversation.Messages.Add(aiResponseMsg);
         
         await _repository.UpdateAsync(conversation, cancellationToken);
@@ -80,9 +80,9 @@ public class AgentOrchestrator : IAgentOrchestrator
         var aiMessages = conversation.Messages.Select(m => 
             new ChatMessage(m.Role == "User" ? ChatRole.User : (m.Role == "System" ? ChatRole.System : ChatRole.Assistant), m.Content)).ToList();
             
-        var response = await _chatClient.CompleteAsync(aiMessages, null, cancellationToken);
+        var response = await _chatClient.GetResponseAsync(aiMessages, null, cancellationToken);
         
-        conversation.Messages.Add(new MAFPRO.Application.Models.Message { Id = Guid.NewGuid(), Role = "Assistant", Content = response.Message.Text ?? "", ConversationId = conversation.Id });
+        conversation.Messages.Add(new MAFPRO.Application.Models.Message { Id = Guid.NewGuid(), Role = "Assistant", Content = response.Messages[0].Text ?? response.Text ?? "", ConversationId = conversation.Id });
         
         await _repository.UpdateAsync(conversation, cancellationToken);
 

@@ -123,7 +123,26 @@
           }
         }
       },
-      "Microsoft.Extensions.DependencyInjection.Abstractions/10.0.4": {
+      "Microsoft.Extensions.DependencyInjection/10.0.5": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "10.0.5"
+        },
+        "compile": {
+          "lib/net10.0/Microsoft.Extensions.DependencyInjection.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net10.0/Microsoft.Extensions.DependencyInjection.dll": {
+            "related": ".xml"
+          }
+        },
+        "build": {
+          "buildTransitive/net8.0/_._": {}
+        }
+      },
+      "Microsoft.Extensions.DependencyInjection.Abstractions/10.0.5": {
         "type": "package",
         "compile": {
           "lib/net10.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll": {
@@ -238,6 +257,9 @@
       "MAFPRO.Application/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v10.0",
+        "dependencies": {
+          "Microsoft.Extensions.DependencyInjection": "10.0.5"
+        },
         "compile": {
           "bin/placeholder/MAFPRO.Application.dll": {}
         },
@@ -413,10 +435,41 @@
         "microsoft.extensions.compliance.abstractions.nuspec"
       ]
     },
-    "Microsoft.Extensions.DependencyInjection.Abstractions/10.0.4": {
-      "sha512": "SIe9zlVQJecnk/DTmevIcl6+aEDYhoVLc2eG2AKwVeNEC8CSyxHAbh4lf0xtHq9JUum0vVTEByGNTK+b6oihTQ==",
+    "Microsoft.Extensions.DependencyInjection/10.0.5": {
+      "sha512": "v1SVsowG6YE1YnHVGmLWz57YTRCQRx9pH5ebIESXfm5isI9gA3QaMyg/oMTzPpXYZwSAVDzYItGJKfmV+pqXkQ==",
       "type": "package",
-      "path": "microsoft.extensions.dependencyinjection.abstractions/10.0.4",
+      "path": "microsoft.extensions.dependencyinjection/10.0.5",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "PACKAGE.md",
+        "THIRD-PARTY-NOTICES.TXT",
+        "buildTransitive/net461/Microsoft.Extensions.DependencyInjection.targets",
+        "buildTransitive/net462/_._",
+        "buildTransitive/net8.0/_._",
+        "buildTransitive/netcoreapp2.0/Microsoft.Extensions.DependencyInjection.targets",
+        "lib/net10.0/Microsoft.Extensions.DependencyInjection.dll",
+        "lib/net10.0/Microsoft.Extensions.DependencyInjection.xml",
+        "lib/net462/Microsoft.Extensions.DependencyInjection.dll",
+        "lib/net462/Microsoft.Extensions.DependencyInjection.xml",
+        "lib/net8.0/Microsoft.Extensions.DependencyInjection.dll",
+        "lib/net8.0/Microsoft.Extensions.DependencyInjection.xml",
+        "lib/net9.0/Microsoft.Extensions.DependencyInjection.dll",
+        "lib/net9.0/Microsoft.Extensions.DependencyInjection.xml",
+        "lib/netstandard2.0/Microsoft.Extensions.DependencyInjection.dll",
+        "lib/netstandard2.0/Microsoft.Extensions.DependencyInjection.xml",
+        "lib/netstandard2.1/Microsoft.Extensions.DependencyInjection.dll",
+        "lib/netstandard2.1/Microsoft.Extensions.DependencyInjection.xml",
+        "microsoft.extensions.dependencyinjection.10.0.5.nupkg.sha512",
+        "microsoft.extensions.dependencyinjection.nuspec",
+        "useSharedDesignerContext.txt"
+      ]
+    },
+    "Microsoft.Extensions.DependencyInjection.Abstractions/10.0.5": {
+      "sha512": "iVMtq9eRvzyhx8949EGT0OCYJfXi737SbRVzWXE5GrOgGj5AaZ9eUuxA/BSUfmOMALKn/g8KfFaNQw0eiB3lyA==",
+      "type": "package",
+      "path": "microsoft.extensions.dependencyinjection.abstractions/10.0.5",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -439,7 +492,7 @@
         "lib/netstandard2.0/Microsoft.Extensions.DependencyInjection.Abstractions.xml",
         "lib/netstandard2.1/Microsoft.Extensions.DependencyInjection.Abstractions.dll",
         "lib/netstandard2.1/Microsoft.Extensions.DependencyInjection.Abstractions.xml",
-        "microsoft.extensions.dependencyinjection.abstractions.10.0.4.nupkg.sha512",
+        "microsoft.extensions.dependencyinjection.abstractions.10.0.5.nupkg.sha512",
         "microsoft.extensions.dependencyinjection.abstractions.nuspec",
         "useSharedDesignerContext.txt"
       ]
@@ -653,11 +706,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\cg_da\\OneDrive\\Documentos\\PROYECTOS\\NET\\MAFPRO\\MAFPRO.Agents\\MAFPRO.Agents.csproj",
+      "projectUniqueName": "C:\\Users\\cg_da\\OneDrive\\Documentos\\PROYECTOS\\NET\\AzureMAF\\AzureMAF\\MAFPRO.Agents\\MAFPRO.Agents.csproj",
       "projectName": "MAFPRO.Agents",
-      "projectPath": "C:\\Users\\cg_da\\OneDrive\\Documentos\\PROYECTOS\\NET\\MAFPRO\\MAFPRO.Agents\\MAFPRO.Agents.csproj",
+      "projectPath": "C:\\Users\\cg_da\\OneDrive\\Documentos\\PROYECTOS\\NET\\AzureMAF\\AzureMAF\\MAFPRO.Agents\\MAFPRO.Agents.csproj",
       "packagesPath": "C:\\Users\\cg_da\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\cg_da\\OneDrive\\Documentos\\PROYECTOS\\NET\\MAFPRO\\MAFPRO.Agents\\obj\\",
+      "outputPath": "C:\\Users\\cg_da\\OneDrive\\Documentos\\PROYECTOS\\NET\\AzureMAF\\AzureMAF\\MAFPRO.Agents\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -678,8 +731,8 @@
         "net10.0": {
           "targetAlias": "net10.0",
           "projectReferences": {
-            "C:\\Users\\cg_da\\OneDrive\\Documentos\\PROYECTOS\\NET\\MAFPRO\\MAFPRO.Application\\MAFPRO.Application.csproj": {
-              "projectPath": "C:\\Users\\cg_da\\OneDrive\\Documentos\\PROYECTOS\\NET\\MAFPRO\\MAFPRO.Application\\MAFPRO.Application.csproj"
+            "C:\\Users\\cg_da\\OneDrive\\Documentos\\PROYECTOS\\NET\\AzureMAF\\AzureMAF\\MAFPRO.Application\\MAFPRO.Application.csproj": {
+              "projectPath": "C:\\Users\\cg_da\\OneDrive\\Documentos\\PROYECTOS\\NET\\AzureMAF\\AzureMAF\\MAFPRO.Application\\MAFPRO.Application.csproj"
             }
           }
         }

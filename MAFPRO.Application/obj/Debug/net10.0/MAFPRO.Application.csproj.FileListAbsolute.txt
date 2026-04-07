@@ -1,0 +1,13 @@
+C:\Users\cg_da\OneDrive\Documentos\PROYECTOS\NET\AzureMAF\AzureMAF\MAFPRO.Application\obj\Debug\net10.0\MAFPRO.Application.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\cg_da\OneDrive\Documentos\PROYECTOS\NET\AzureMAF\AzureMAF\MAFPRO.Application\obj\Debug\net10.0\MAFPRO.Application.AssemblyInfoInputs.cache
+C:\Users\cg_da\OneDrive\Documentos\PROYECTOS\NET\AzureMAF\AzureMAF\MAFPRO.Application\obj\Debug\net10.0\MAFPRO.Application.AssemblyInfo.cs
+C:\Users\cg_da\OneDrive\Documentos\PROYECTOS\NET\AzureMAF\AzureMAF\MAFPRO.Application\obj\Debug\net10.0\MAFPRO.Application.csproj.CoreCompileInputs.cache
+C:\Users\cg_da\OneDrive\Documentos\PROYECTOS\NET\AzureMAF\AzureMAF\MAFPRO.Application\obj\Debug\net10.0\MAFPRO.Application.sourcelink.json
+C:\Users\cg_da\OneDrive\Documentos\PROYECTOS\NET\AzureMAF\AzureMAF\MAFPRO.Application\bin\Debug\net10.0\MAFPRO.Application.deps.json
+C:\Users\cg_da\OneDrive\Documentos\PROYECTOS\NET\AzureMAF\AzureMAF\MAFPRO.Application\bin\Debug\net10.0\MAFPRO.Application.dll
+C:\Users\cg_da\OneDrive\Documentos\PROYECTOS\NET\AzureMAF\AzureMAF\MAFPRO.Application\bin\Debug\net10.0\MAFPRO.Application.pdb
+C:\Users\cg_da\OneDrive\Documentos\PROYECTOS\NET\AzureMAF\AzureMAF\MAFPRO.Application\obj\Debug\net10.0\MAFPRO.Application.csproj.AssemblyReference.cache
+C:\Users\cg_da\OneDrive\Documentos\PROYECTOS\NET\AzureMAF\AzureMAF\MAFPRO.Application\obj\Debug\net10.0\MAFPRO.Application.dll
+C:\Users\cg_da\OneDrive\Documentos\PROYECTOS\NET\AzureMAF\AzureMAF\MAFPRO.Application\obj\Debug\net10.0\refint\MAFPRO.Application.dll
+C:\Users\cg_da\OneDrive\Documentos\PROYECTOS\NET\AzureMAF\AzureMAF\MAFPRO.Application\obj\Debug\net10.0\MAFPRO.Application.pdb
+C:\Users\cg_da\OneDrive\Documentos\PROYECTOS\NET\AzureMAF\AzureMAF\MAFPRO.Application\obj\Debug\net10.0\ref\MAFPRO.Application.dll

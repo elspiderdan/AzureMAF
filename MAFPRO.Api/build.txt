@@ -1,0 +1,14 @@
+﻿  Determinando los proyectos que se van a restaurar...
+  Todos los proyectos est├ín actualizados para la restauraci├│n.
+  MAFPRO.Application -> C:\Users\cg_da\OneDrive\Documentos\PROYECTOS\NET\AzureMAF\AzureMAF\MAFPRO.Application\bin\Debug\net10.0\MAFPRO.Application.dll
+  MAFPRO.Infrastructure -> C:\Users\cg_da\OneDrive\Documentos\PROYECTOS\NET\AzureMAF\AzureMAF\MAFPRO.Infrastructure\bin\Debug\net10.0\MAFPRO.Infrastructure.dll
+  MAFPRO.Agents -> C:\Users\cg_da\OneDrive\Documentos\PROYECTOS\NET\AzureMAF\AzureMAF\MAFPRO.Agents\bin\Debug\net10.0\MAFPRO.Agents.dll
+C:\Users\cg_da\OneDrive\Documentos\PROYECTOS\NET\AzureMAF\AzureMAF\MAFPRO.Api\Program.cs(38,13): error CS1061: "AzureOpenAIClient" no contiene una definici├│n para "AsChatClient" ni un m├®todo de extensi├│n accesible "AsChatClient" que acepte un primer argumento del tipo "AzureOpenAIClient" (┬┐falta alguna directiva using o una referencia de ensamblado?) [C:\Users\cg_da\OneDrive\Documentos\PROYECTOS\NET\AzureMAF\AzureMAF\MAFPRO.Api\MAFPRO.Api.csproj]
+
+ERROR al compilar.
+
+C:\Users\cg_da\OneDrive\Documentos\PROYECTOS\NET\AzureMAF\AzureMAF\MAFPRO.Api\Program.cs(38,13): error CS1061: "AzureOpenAIClient" no contiene una definici├│n para "AsChatClient" ni un m├®todo de extensi├│n accesible "AsChatClient" que acepte un primer argumento del tipo "AzureOpenAIClient" (┬┐falta alguna directiva using o una referencia de ensamblado?) [C:\Users\cg_da\OneDrive\Documentos\PROYECTOS\NET\AzureMAF\AzureMAF\MAFPRO.Api\MAFPRO.Api.csproj]
+    0 Advertencia(s)
+    1 Errores
+
+Tiempo transcurrido 00:00:01.37

@@ -1,8 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "60Pj9IASRZ4=",
+  "dgSpecHash": "tC5gcLG071Y=",
   "success": true,
-  "projectFilePath": "C:\\Users\\cg_da\\OneDrive\\Documentos\\PROYECTOS\\NET\\MAFPRO\\MAFPRO.Application\\MAFPRO.Application.csproj",
-  "expectedPackageFiles": [],
+  "projectFilePath": "C:\\Users\\cg_da\\OneDrive\\Documentos\\PROYECTOS\\NET\\AzureMAF\\AzureMAF\\MAFPRO.Application\\MAFPRO.Application.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\cg_da\\.nuget\\packages\\microsoft.extensions.dependencyinjection\\10.0.5\\microsoft.extensions.dependencyinjection.10.0.5.nupkg.sha512",
+    "C:\\Users\\cg_da\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\10.0.5\\microsoft.extensions.dependencyinjection.abstractions.10.0.5.nupkg.sha512"
+  ],
   "logs": []
 }

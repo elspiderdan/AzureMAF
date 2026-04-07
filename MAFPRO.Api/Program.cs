@@ -32,16 +32,7 @@ var openAIEndpoint = builder.Configuration["AzureOpenAI:Endpoint"] ?? "https://m
 
 // Mocking IChatClient for compilation/demo without touching real API Keys unless provided
 builder.Services.AddSingleton<IChatClient>(sp => {
-    try 
-    {
-        return new AzureOpenAIClient(new Uri(openAIEndpoint), new ApiKeyCredential(openAIApiKey))
-           .AsChatClient("gpt-4o");
-    }
-    catch
-    {
-        // Fallback for demo
-        return new MockChatClient();
-    }
+    return new MockChatClient();
 });
 
 builder.Services.AddEndpointsApiExplorer();
@@ -67,7 +58,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+// app.UseHttpsRedirection();
 
 // Enable CORS
 app.UseCors("AllowAll");
@@ -129,12 +120,12 @@ class MockChatClient : IChatClient
     
     public ChatClientMetadata Metadata => new ChatClientMetadata("MockProvider", new Uri("http://localhost"), "mock-model");
 
-    public Task<ChatCompletion> CompleteAsync(IList<ChatMessage> chatMessages, ChatOptions? options = null, CancellationToken cancellationToken = default)
+    public Task<ChatResponse> GetResponseAsync(IEnumerable<ChatMessage> chatMessages, ChatOptions? options = null, CancellationToken cancellationToken = default)
     {
-        return Task.FromResult(new ChatCompletion(new ChatMessage(ChatRole.Assistant, "Mock response!")));
+        return Task.FromResult(new ChatResponse(new ChatMessage(ChatRole.Assistant, "Mock response!")));
     }
 
-    public IAsyncEnumerable<StreamingChatCompletionUpdate> CompleteStreamingAsync(IList<ChatMessage> chatMessages, ChatOptions? options = null, CancellationToken cancellationToken = default)
+    public IAsyncEnumerable<ChatResponseUpdate> GetStreamingResponseAsync(IEnumerable<ChatMessage> chatMessages, ChatOptions? options = null, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }

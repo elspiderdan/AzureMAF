@@ -1,2 +1,6 @@
 <Solution>
+  <Project Path="MAFPRO.Agents\MAFPRO.Agents.csproj" />
+  <Project Path="MAFPRO.Api\MAFPRO.Api.csproj" />
+  <Project Path="MAFPRO.Application\MAFPRO.Application.csproj" />
+  <Project Path="MAFPRO.Infrastructure\MAFPRO.Infrastructure.csproj" />
 </Solution>
