@@ -41,21 +41,25 @@ public class AgentOrchestrator : IAgentOrchestrator
         if (userMessage.Contains("approve", StringComparison.OrdinalIgnoreCase) || userMessage.Contains("deploy", StringComparison.OrdinalIgnoreCase))
         {
             conversation.Status = "WaitingForHuman";
-            conversation.Messages.Add(new MAFPRO.Application.Models.Message { Id = Guid.NewGuid(), Role = "System", Content = "The action requires human approval. Plase approve to continue.", ConversationId = conversation.Id });
+            conversation.Messages.Add(new MAFPRO.Application.Models.Message { Id = Guid.NewGuid(), Role = "System", Content = "The action requires human approval. Please approve to continue.", ConversationId = conversation.Id });
             await _repository.UpdateAsync(conversation, cancellationToken);
             return conversation;
         }
 
         // Configure tools
+        var weatherTool = AIFunctionFactory.Create(new Tools.WeatherTool().GetWeather);
+        var dateTimeTool = AIFunctionFactory.Create(new Tools.DateTimeTool().GetCurrentDateTime);
+        var mathTool = AIFunctionFactory.Create(new Tools.MathTool().Add);
+
         var chatOptions = new ChatOptions
         {
-            Tools = [AIFunctionFactory.Create(new Tools.WeatherTool().GetWeather)]
+            Tools = [weatherTool, dateTimeTool, mathTool]
         };
 
         // Call the AI
         var response = await _chatClient.GetResponseAsync(aiMessages, chatOptions, cancellationToken);
 
-        var aiResponseMsg = new MAFPRO.Application.Models.Message { Id = Guid.NewGuid(), Role = "Assistant", Content = response.Messages[0].Text ?? response.Text ?? "", ConversationId = conversation.Id };
+        var aiResponseMsg = new MAFPRO.Application.Models.Message { Id = Guid.NewGuid(), Role = "Assistant", Content = response.Text ?? response.Messages[0].Text ?? "", ConversationId = conversation.Id };
         conversation.Messages.Add(aiResponseMsg);
         
         await _repository.UpdateAsync(conversation, cancellationToken);
@@ -76,11 +80,20 @@ public class AgentOrchestrator : IAgentOrchestrator
         conversation.Status = "Active";
         conversation.Messages.Add(new MAFPRO.Application.Models.Message { Id = Guid.NewGuid(), Role = "System", Content = "Human approved the action.", ConversationId = conversation.Id });
 
-        // Agent can now continue its work
+        // Agent can now continue its work - with same tools available
         var aiMessages = conversation.Messages.Select(m => 
             new ChatMessage(m.Role == "User" ? ChatRole.User : (m.Role == "System" ? ChatRole.System : ChatRole.Assistant), m.Content)).ToList();
+        
+        var approveOptions = new ChatOptions
+        {
+            Tools = [
+                AIFunctionFactory.Create(new Tools.WeatherTool().GetWeather),
+                AIFunctionFactory.Create(new Tools.DateTimeTool().GetCurrentDateTime),
+                AIFunctionFactory.Create(new Tools.MathTool().Add)
+            ]
+        };
             
-        var response = await _chatClient.GetResponseAsync(aiMessages, null, cancellationToken);
+        var response = await _chatClient.GetResponseAsync(aiMessages, approveOptions, cancellationToken);
         
         conversation.Messages.Add(new MAFPRO.Application.Models.Message { Id = Guid.NewGuid(), Role = "Assistant", Content = response.Messages[0].Text ?? response.Text ?? "", ConversationId = conversation.Id });
         

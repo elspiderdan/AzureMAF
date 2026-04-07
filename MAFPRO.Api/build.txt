@@ -3,12 +3,10 @@
   MAFPRO.Application -> C:\Users\cg_da\OneDrive\Documentos\PROYECTOS\NET\AzureMAF\AzureMAF\MAFPRO.Application\bin\Debug\net10.0\MAFPRO.Application.dll
   MAFPRO.Infrastructure -> C:\Users\cg_da\OneDrive\Documentos\PROYECTOS\NET\AzureMAF\AzureMAF\MAFPRO.Infrastructure\bin\Debug\net10.0\MAFPRO.Infrastructure.dll
   MAFPRO.Agents -> C:\Users\cg_da\OneDrive\Documentos\PROYECTOS\NET\AzureMAF\AzureMAF\MAFPRO.Agents\bin\Debug\net10.0\MAFPRO.Agents.dll
-C:\Users\cg_da\OneDrive\Documentos\PROYECTOS\NET\AzureMAF\AzureMAF\MAFPRO.Api\Program.cs(38,13): error CS1061: "AzureOpenAIClient" no contiene una definici├│n para "AsChatClient" ni un m├®todo de extensi├│n accesible "AsChatClient" que acepte un primer argumento del tipo "AzureOpenAIClient" (┬┐falta alguna directiva using o una referencia de ensamblado?) [C:\Users\cg_da\OneDrive\Documentos\PROYECTOS\NET\AzureMAF\AzureMAF\MAFPRO.Api\MAFPRO.Api.csproj]
+  MAFPRO.Api -> C:\Users\cg_da\OneDrive\Documentos\PROYECTOS\NET\AzureMAF\AzureMAF\MAFPRO.Api\bin\Debug\net10.0\MAFPRO.Api.dll
 
-ERROR al compilar.
-
-C:\Users\cg_da\OneDrive\Documentos\PROYECTOS\NET\AzureMAF\AzureMAF\MAFPRO.Api\Program.cs(38,13): error CS1061: "AzureOpenAIClient" no contiene una definici├│n para "AsChatClient" ni un m├®todo de extensi├│n accesible "AsChatClient" que acepte un primer argumento del tipo "AzureOpenAIClient" (┬┐falta alguna directiva using o una referencia de ensamblado?) [C:\Users\cg_da\OneDrive\Documentos\PROYECTOS\NET\AzureMAF\AzureMAF\MAFPRO.Api\MAFPRO.Api.csproj]
+Compilaci├│n correcta.
     0 Advertencia(s)
-    1 Errores
+    0 Errores
 
-Tiempo transcurrido 00:00:01.37
+Tiempo transcurrido 00:00:01.57

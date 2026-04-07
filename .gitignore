@@ -1,0 +1,89 @@
+# ===========================
+# .NET / C# - Build outputs
+# ===========================
+
+# Carpetas de compilación
+[Bb]in/
+[Oo]bj/
+[Dd]ebug/
+[Rr]elease/
+[Dd]ebugPublic/
+[Rr]elease[Pp]lugins/
+[Aa]rtifacts/
+
+# Archivos de usuario de Visual Studio
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.userprefs
+
+# Visual Studio cache/options directory
+.vs/
+.vscode/
+
+# Build results
+[Bb]uild/
+[Pp]ublish/
+
+# Test results
+[Tt]est[Rr]esults/
+[Cc]overage*/
+*.coverage
+*.coveragexml
+
+# NuGet
+*.nupkg
+*.snupkg
+**/[Pp]ackages/
+*.nuget.props
+*.nuget.targets
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# .NET runtime files
+*.dll
+*.exe
+*.pdb
+*.mdb
+*.ilk
+*.meta
+*.pch
+*.lib
+*.exp
+*.so
+*.out
+*.log
+
+# Carpetas de logs temporales de compilación
+build.txt
+build_err*.txt
+run_logs.txt
+
+# ===========================
+# ASP.NET / Configuration
+# ===========================
+
+# Archivos de secretos locales (¡NO subir credenciales!)
+appsettings.Development.json
+appsettings.Local.json
+**/secrets.json
+
+# ===========================
+# Frontend - Node / React
+# ===========================
+node_modules/
+dist/
+.cache/
+.parcel-cache/
+*.local
+
+# ===========================
+# OS / IDE
+# ===========================
+Thumbs.db
+.DS_Store
+*.swp
+*.swo
+*~

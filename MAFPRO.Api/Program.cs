@@ -6,9 +6,9 @@ using MAFPRO.Infrastructure;
 using MAFPRO.Infrastructure.Persistence;
 using MAFPRO.Api;
 using Microsoft.Extensions.AI;
-using Azure.AI.OpenAI;
-using System.ClientModel;
 using Microsoft.EntityFrameworkCore;
+using OpenAI;
+using System.ClientModel;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,18 +20,47 @@ builder.Services.AddAgents();
 // Add Observability
 builder.Services.AddObservability();
 
-// Add Microsoft.Extensions.AI ChatClient (Mock or Azure)
-// In a real scenario, use endpoints from configuration
-var openAIApiKey = builder.Configuration["AzureOpenAI:ApiKey"] ?? "mock-key";
-var openAIEndpoint = builder.Configuration["AzureOpenAI:Endpoint"] ?? "https://mock.openai.azure.com/";
+// Add Microsoft.Extensions.AI ChatClient (Azure when configured, otherwise Mock)
+var openAIApiKey = builder.Configuration["AzureOpenAI:ApiKey"];
+var openAIEndpoint = builder.Configuration["AzureOpenAI:Endpoint"];
+var azureDeployment = builder.Configuration["AzureOpenAI:Deployment"] ?? "gpt-4o";
 
-// Configurar AzureOpenAIChatClient si hay llaves válidas, si no mockearlo o tirar excepción.
-// Aquí de demostración inyectamos un cliente genérico. Si fuese real, se usaría:
-// IChatClient client = new AzureOpenAIClient(new Uri(openAIEndpoint), new ApiKeyCredential(openAIApiKey))
-//    .AsChatClient("gpt-4o");
+// Register IChatClient: Azure OpenAI if fully configured, otherwise MockChatClient
+builder.Services.AddSingleton<IChatClient>(sp =>
+{
+    var logger = sp.GetRequiredService<ILogger<Program>>();
+    var isAzureConfigured =
+        !string.IsNullOrWhiteSpace(openAIEndpoint) &&
+        !string.IsNullOrWhiteSpace(openAIApiKey);
 
-// Mocking IChatClient for compilation/demo without touching real API Keys unless provided
-builder.Services.AddSingleton<IChatClient>(sp => {
+    if (isAzureConfigured)
+    {
+        try
+        {
+            logger.LogInformation("Azure OpenAI configured. Endpoint: {Endpoint}, Deployment: {Deployment}", openAIEndpoint, azureDeployment);
+
+            var azureClient = new OpenAI.Chat.ChatClient(
+                    azureDeployment!,
+                    new ApiKeyCredential(openAIApiKey!),
+                    new OpenAIClientOptions { Endpoint = new Uri(openAIEndpoint!) })
+                .AsIChatClient();
+
+            var toolEnabledClient = new ChatClientBuilder(azureClient)
+                .UseFunctionInvocation()
+                .Build();
+
+            return new FallbackChatClient(toolEnabledClient, new MockChatClient(), logger);
+        }
+        catch (Exception ex)
+        {
+            logger.LogWarning("Could not initialize Azure OpenAI ({Error}). Falling back to MockChatClient.", ex.Message);
+        }
+    }
+    else
+    {
+        logger.LogWarning("Azure OpenAI is not fully configured (Endpoint/ApiKey). Using MockChatClient.");
+    }
+
     return new MockChatClient();
 });
 
@@ -122,7 +151,12 @@ class MockChatClient : IChatClient
 
     public Task<ChatResponse> GetResponseAsync(IEnumerable<ChatMessage> chatMessages, ChatOptions? options = null, CancellationToken cancellationToken = default)
     {
-        return Task.FromResult(new ChatResponse(new ChatMessage(ChatRole.Assistant, "Mock response!")));
+        var lastUserMessage = chatMessages.LastOrDefault(m => m.Role == ChatRole.User)?.Text;
+        var response = string.IsNullOrWhiteSpace(lastUserMessage)
+            ? "Mock response: no user message received."
+            : $"Mock response: received '{lastUserMessage}'. Configure AzureOpenAI settings to get a real model answer.";
+
+        return Task.FromResult(new ChatResponse(new ChatMessage(ChatRole.Assistant, response)));
     }
 
     public IAsyncEnumerable<ChatResponseUpdate> GetStreamingResponseAsync(IEnumerable<ChatMessage> chatMessages, ChatOptions? options = null, CancellationToken cancellationToken = default)
@@ -131,4 +165,61 @@ class MockChatClient : IChatClient
     }
 
     public object? GetService(Type serviceType, object? serviceKey = null) => null;
+}
+
+class FallbackChatClient : IChatClient
+{
+    private readonly IChatClient _primary;
+    private readonly IChatClient _fallback;
+    private readonly ILogger _logger;
+
+    public FallbackChatClient(IChatClient primary, IChatClient fallback, ILogger logger)
+    {
+        _primary = primary;
+        _fallback = fallback;
+        _logger = logger;
+    }
+
+    public ChatClientMetadata Metadata => new ChatClientMetadata("FallbackProvider", new Uri("http://localhost"), "fallback-client");
+
+    public async Task<ChatResponse> GetResponseAsync(IEnumerable<ChatMessage> chatMessages, ChatOptions? options = null, CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            return await _primary.GetResponseAsync(chatMessages, options, cancellationToken);
+        }
+        catch (ClientResultException ex) when (ex.Status == 404)
+        {
+            _logger.LogWarning("Azure OpenAI returned 404 (deployment or endpoint issue). Falling back to mock response.");
+            return await _fallback.GetResponseAsync(chatMessages, options, cancellationToken);
+        }
+    }
+
+    public async IAsyncEnumerable<ChatResponseUpdate> GetStreamingResponseAsync(IEnumerable<ChatMessage> chatMessages, ChatOptions? options = null, [System.Runtime.CompilerServices.EnumeratorCancellation] CancellationToken cancellationToken = default)
+    {
+        IAsyncEnumerable<ChatResponseUpdate> stream;
+        try
+        {
+            stream = _primary.GetStreamingResponseAsync(chatMessages, options, cancellationToken);
+        }
+        catch (ClientResultException ex) when (ex.Status == 404)
+        {
+            _logger.LogWarning("Azure OpenAI streaming returned 404. Falling back to mock streaming response.");
+            stream = _fallback.GetStreamingResponseAsync(chatMessages, options, cancellationToken);
+        }
+
+        await foreach (var update in stream.WithCancellation(cancellationToken))
+        {
+            yield return update;
+        }
+    }
+
+    public object? GetService(Type serviceType, object? serviceKey = null) =>
+        _primary.GetService(serviceType, serviceKey) ?? _fallback.GetService(serviceType, serviceKey);
+
+    public void Dispose()
+    {
+        _primary.Dispose();
+        _fallback.Dispose();
+    }
 }
