@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Plus, Hash, LogIn } from 'lucide-react';
 
-function Sidebar({ currentId, onSelectWorkflow }) {
+function Sidebar({ onSelectWorkflow }) {
   const [inputId, setInputId] = useState('');
 
   const generateUuid = () => {

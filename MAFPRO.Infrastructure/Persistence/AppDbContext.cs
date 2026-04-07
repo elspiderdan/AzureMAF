@@ -11,6 +11,7 @@ public class AppDbContext : DbContext
 
     public DbSet<Conversation> Conversations { get; set; }
     public DbSet<Message> Messages { get; set; }
+    public DbSet<PromptTemplate> PromptTemplates { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -18,5 +19,9 @@ public class AppDbContext : DbContext
             .HasMany(c => c.Messages)
             .WithOne(m => m.Conversation)
             .HasForeignKey(m => m.ConversationId);
+
+        modelBuilder.Entity<PromptTemplate>()
+            .HasIndex(p => new { p.AgentName, p.Version })
+            .IsUnique();
     }
 }

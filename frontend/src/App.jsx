@@ -1,17 +1,22 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import Sidebar from './components/Sidebar';
 import ChatArea from './components/ChatArea';
 import ChatInput from './components/ChatInput';
 import ApprovalBanner from './components/ApprovalBanner';
+import PromptManager from './components/PromptManager';
 import { Bot } from 'lucide-react';
 
 const API_BASE = 'http://localhost:5041/api/workflows';
+const PROMPT_API_BASE = 'http://localhost:5041/api/prompts';
 
 function App() {
   const [workflowId, setWorkflowId] = useState('');
   const [messages, setMessages] = useState([]);
   const [status, setStatus] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [prompts, setPrompts] = useState([]);
+  const [activePromptId, setActivePromptId] = useState(null);
 
   // Load history when workflowId changes
   useEffect(() => {
@@ -23,6 +28,7 @@ function App() {
 
     const fetchHistory = async () => {
       try {
+        setError('');
         const res = await fetch(`${API_BASE}/${workflowId}/history`);
         if (res.ok) {
           const data = await res.json();
@@ -33,13 +39,29 @@ function App() {
           setMessages([{ role: 'System', content: 'Nuevo flujo de trabajo iniciado. Escribe un mensaje para comenzar.' }]);
           setStatus('Created');
         }
-      } catch (error) {
-        console.error('Error fetching history:', error);
+      } catch {
+        setError('No se pudo cargar el historial del workflow.');
       }
     };
 
     fetchHistory();
   }, [workflowId]);
+
+  const fetchPrompts = async () => {
+    try {
+      const res = await fetch(`${PROMPT_API_BASE}?agent=default`);
+      if (!res.ok) throw new Error('failed prompt list');
+      const data = await res.json();
+      setPrompts(data.items || []);
+      setActivePromptId(data.activePromptId || null);
+    } catch {
+      setError('No se pudo cargar la configuracion de prompts.');
+    }
+  };
+
+  useEffect(() => {
+    fetchPrompts();
+  }, []);
 
   const handleSendMessage = async (msgText) => {
     if (!workflowId || !msgText.trim()) return;
@@ -47,6 +69,7 @@ function App() {
     const userMessage = { role: 'User', content: msgText };
     setMessages(prev => [...prev, userMessage]);
     setIsLoading(true);
+    setError('');
 
     try {
       const res = await fetch(`${API_BASE}/${workflowId}/chat?message=${encodeURIComponent(msgText)}`, {
@@ -57,10 +80,11 @@ function App() {
         setMessages(data.messages || []);
         setStatus(data.status || '');
       } else {
-        console.error('Failed to send message');
+        const err = await res.json();
+        setError(err.error || 'No se pudo enviar el mensaje.');
       }
-    } catch (error) {
-      console.error('Error during chat:', error);
+    } catch {
+      setError('Error de conectividad enviando mensaje.');
     } finally {
       setIsLoading(false);
     }
@@ -69,6 +93,7 @@ function App() {
   const handleApprove = async () => {
     if (!workflowId) return;
     setIsLoading(true);
+    setError('');
     try {
       const res = await fetch(`${API_BASE}/${workflowId}/approve`, {
         method: 'POST'
@@ -77,20 +102,84 @@ function App() {
         const data = await res.json();
         setMessages(data.messages || []);
         setStatus(data.status || '');
+      } else {
+        const err = await res.json();
+        setError(err.error || 'No se pudo aprobar.');
       }
-    } catch (error) {
-      console.error('Error approving workflow:', error);
+    } catch {
+      setError('Error aprobando workflow.');
     } finally {
       setIsLoading(false);
     }
   };
 
+  const handleReject = async () => {
+    if (!workflowId) return;
+    setIsLoading(true);
+    setError('');
+    try {
+      const res = await fetch(`${API_BASE}/${workflowId}/reject`, {
+        method: 'POST'
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setMessages(data.messages || []);
+        setStatus(data.status || '');
+      } else {
+        const err = await res.json();
+        setError(err.error || 'No se pudo rechazar.');
+      }
+    } catch {
+      setError('Error rechazando workflow.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleCreatePrompt = async ({ version, content }) => {
+    try {
+      setError('');
+      const res = await fetch(PROMPT_API_BASE, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ agentName: 'default', version, content })
+      });
+
+      if (!res.ok) {
+        const err = await res.json();
+        setError(err.error || 'No se pudo crear el prompt.');
+        return false;
+      }
+
+      await fetchPrompts();
+      return true;
+    } catch {
+      setError('Error creando version del prompt.');
+      return false;
+    }
+  };
+
+  const handleActivatePrompt = async (promptId) => {
+    try {
+      setError('');
+      const res = await fetch(`${PROMPT_API_BASE}/${promptId}/activate?agent=default`, {
+        method: 'POST'
+      });
+
+      if (!res.ok) {
+        setError('No se pudo activar el prompt seleccionado.');
+        return;
+      }
+
+      await fetchPrompts();
+    } catch {
+      setError('Error activando prompt.');
+    }
+  };
+
   return (
     <div className="app-container">
-      <Sidebar 
-        currentId={workflowId} 
-        onSelectWorkflow={setWorkflowId} 
-      />
+      <Sidebar onSelectWorkflow={setWorkflowId} />
       
       <main className="main-content">
         <header className="glass-panel" style={{ padding: '20px', borderRight: 'none', borderBottom: '1px solid var(--border-light)', display: 'flex', alignItems: 'center', gap: '12px' }}>
@@ -105,9 +194,22 @@ function App() {
 
         {workflowId ? (
           <>
-            <ApprovalBanner status={status} onApprove={handleApprove} isLoading={isLoading} />
+            <PromptManager
+              prompts={prompts}
+              activePromptId={activePromptId}
+              isLoading={isLoading}
+              onRefresh={fetchPrompts}
+              onCreate={handleCreatePrompt}
+              onActivate={handleActivatePrompt}
+            />
+            <ApprovalBanner status={status} onApprove={handleApprove} onReject={handleReject} isLoading={isLoading} />
+            {error && (
+              <div style={{ margin: '12px 24px 0', color: '#ff7b7b', fontSize: '0.9rem' }}>
+                {error}
+              </div>
+            )}
             <ChatArea messages={messages} isLoading={isLoading} />
-            <ChatInput onSend={handleSendMessage} disabled={isLoading || status === 'PendingApproval'} />
+            <ChatInput onSend={handleSendMessage} disabled={isLoading || status === 'WaitingForHuman'} />
           </>
         ) : (
           <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-muted)' }}>

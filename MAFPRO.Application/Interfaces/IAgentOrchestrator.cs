@@ -9,4 +9,5 @@ public interface IAgentOrchestrator
     
     // Human approves a waiting step
     Task<Conversation> ApproveWorkflowAsync(Guid conversationId, CancellationToken cancellationToken = default);
+    Task<Conversation> RejectWorkflowAsync(Guid conversationId, string? reason = null, CancellationToken cancellationToken = default);
 }

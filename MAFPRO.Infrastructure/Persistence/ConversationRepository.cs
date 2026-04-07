@@ -44,4 +44,48 @@ public class ConversationRepository : IConversationRepository
         
         await _context.SaveChangesAsync(cancellationToken);
     }
+
+    public Task<List<PromptTemplate>> GetPromptsAsync(string agentName, CancellationToken cancellationToken = default)
+    {
+        return _context.PromptTemplates
+            .Where(p => p.AgentName == agentName)
+            .OrderByDescending(p => p.CreatedAt)
+            .ToListAsync(cancellationToken);
+    }
+
+    public Task<PromptTemplate?> GetActivePromptAsync(string agentName, CancellationToken cancellationToken = default)
+    {
+        return _context.PromptTemplates
+            .Where(p => p.AgentName == agentName && p.IsActive)
+            .OrderByDescending(p => p.CreatedAt)
+            .FirstOrDefaultAsync(cancellationToken);
+    }
+
+    public async Task<PromptTemplate> AddPromptAsync(PromptTemplate promptTemplate, CancellationToken cancellationToken = default)
+    {
+        _context.PromptTemplates.Add(promptTemplate);
+        await _context.SaveChangesAsync(cancellationToken);
+        return promptTemplate;
+    }
+
+    public async Task<PromptTemplate?> SetActivePromptAsync(string agentName, Guid promptId, CancellationToken cancellationToken = default)
+    {
+        var prompts = await _context.PromptTemplates
+            .Where(p => p.AgentName == agentName)
+            .ToListAsync(cancellationToken);
+
+        var selected = prompts.FirstOrDefault(p => p.Id == promptId);
+        if (selected == null)
+        {
+            return null;
+        }
+
+        foreach (var prompt in prompts)
+        {
+            prompt.IsActive = prompt.Id == promptId;
+        }
+
+        await _context.SaveChangesAsync(cancellationToken);
+        return selected;
+    }
 }

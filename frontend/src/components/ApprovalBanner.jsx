@@ -1,7 +1,7 @@
-import { ShieldAlert, Check } from 'lucide-react';
+import { ShieldAlert, Check, X } from 'lucide-react';
 
-function ApprovalBanner({ status, onApprove, isLoading }) {
-  if (status !== 'PendingApproval') return null;
+function ApprovalBanner({ status, onApprove, onReject, isLoading }) {
+  if (status !== 'WaitingForHuman') return null;
 
   return (
     <div className="glass-surface animate-slide-up" style={{
@@ -27,19 +27,33 @@ function ApprovalBanner({ status, onApprove, isLoading }) {
         </div>
       </div>
       
-      <button 
-        className="btn" 
-        onClick={onApprove} 
-        disabled={isLoading}
-        style={{ 
-          background: 'var(--accent-amethyst)', 
-          color: '#fff', 
-          border: 'none',
-          boxShadow: '0 4px 15px rgba(157, 78, 221, 0.3)'
-        }}
-      >
-        <Check size={16} /> Aprobar Flujo
-      </button>
+      <div style={{ display: 'flex', gap: '10px' }}>
+        <button 
+          className="btn" 
+          onClick={onReject}
+          disabled={isLoading}
+          style={{ 
+            background: 'rgba(255, 82, 82, 0.2)', 
+            color: '#fff', 
+            border: '1px solid rgba(255, 82, 82, 0.5)'
+          }}
+        >
+          <X size={16} /> Rechazar
+        </button>
+        <button 
+          className="btn" 
+          onClick={onApprove} 
+          disabled={isLoading}
+          style={{ 
+            background: 'var(--accent-amethyst)', 
+            color: '#fff', 
+            border: 'none',
+            boxShadow: '0 4px 15px rgba(157, 78, 221, 0.3)'
+          }}
+        >
+          <Check size={16} /> Aprobar Flujo
+        </button>
+      </div>
     </div>
   );
 }

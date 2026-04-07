@@ -16,7 +16,7 @@ function ChatArea({ messages, isLoading }) {
         
         return (
           <div 
-            key={index} 
+            key={`${msg.role}-${index}-${msg.content.slice(0, 20)}`} 
             className="animate-slide-up"
             style={{ 
               display: 'flex', 

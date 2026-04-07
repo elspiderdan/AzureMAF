@@ -19,3 +19,13 @@ public class Message
 
     public Conversation Conversation { get; set; } = null!;
 }
+
+public class PromptTemplate
+{
+    public Guid Id { get; set; }
+    public string AgentName { get; set; } = "default";
+    public string Version { get; set; } = "v1";
+    public string Content { get; set; } = string.Empty;
+    public bool IsActive { get; set; }
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+}

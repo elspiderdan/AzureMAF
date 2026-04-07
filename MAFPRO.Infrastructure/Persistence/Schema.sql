@@ -34,3 +34,24 @@ BEGIN
     CREATE NONCLUSTERED INDEX [IX_Messages_ConversationId] ON [dbo].[Messages] ([ConversationId]);
 END
 GO
+
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[PromptTemplates]') AND type in (N'U'))
+BEGIN
+    CREATE TABLE [dbo].[PromptTemplates] (
+        [Id] UNIQUEIDENTIFIER NOT NULL,
+        [AgentName] NVARCHAR(450) NOT NULL,
+        [Version] NVARCHAR(450) NOT NULL,
+        [Content] NVARCHAR(MAX) NOT NULL,
+        [IsActive] BIT NOT NULL,
+        [CreatedAt] DATETIME2 NOT NULL,
+        CONSTRAINT [PK_PromptTemplates] PRIMARY KEY CLUSTERED ([Id] ASC)
+    );
+END
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[PromptTemplates]') AND name = N'IX_PromptTemplates_AgentName_Version')
+BEGIN
+    CREATE UNIQUE NONCLUSTERED INDEX [IX_PromptTemplates_AgentName_Version]
+        ON [dbo].[PromptTemplates] ([AgentName], [Version]);
+END
+GO

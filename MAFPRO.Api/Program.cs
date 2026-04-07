@@ -126,6 +126,23 @@ apiGroup.MapPost("/{id}/approve", async (Guid id, IAgentOrchestrator orchestrato
     }
 });
 
+apiGroup.MapPost("/{id}/reject", async (Guid id, string? reason, IAgentOrchestrator orchestrator) =>
+{
+    try
+    {
+        var conversation = await orchestrator.RejectWorkflowAsync(id, reason);
+        return Results.Ok(new { Status = conversation.Status, Messages = conversation.Messages.Select(m => new { m.Role, m.Content }) });
+    }
+    catch (InvalidOperationException ex)
+    {
+        return Results.BadRequest(new { Error = ex.Message });
+    }
+    catch (KeyNotFoundException)
+    {
+        return Results.NotFound();
+    }
+});
+
 apiGroup.MapGet("/{id}/history", async (Guid id, IConversationRepository repository) =>
 {
     var conversation = await repository.GetByIdAsync(id);
@@ -133,11 +150,81 @@ apiGroup.MapGet("/{id}/history", async (Guid id, IConversationRepository reposit
     return Results.Ok(new { Status = conversation.Status, Messages = conversation.Messages.Select(m => new { m.Role, m.Content }) });
 });
 
+var promptsGroup = app.MapGroup("/api/prompts").WithTags("Prompts");
+
+promptsGroup.MapGet("/", async (string? agent, IConversationRepository repository) =>
+{
+    var agentName = string.IsNullOrWhiteSpace(agent) ? "default" : agent;
+    var prompts = await repository.GetPromptsAsync(agentName);
+    var active = await repository.GetActivePromptAsync(agentName);
+    return Results.Ok(new
+    {
+        Agent = agentName,
+        ActivePromptId = active?.Id,
+        Items = prompts.Select(p => new { p.Id, p.AgentName, p.Version, p.Content, p.IsActive, p.CreatedAt })
+    });
+});
+
+promptsGroup.MapPost("/", async (CreatePromptRequest request, IConversationRepository repository) =>
+{
+    if (string.IsNullOrWhiteSpace(request.Content) || string.IsNullOrWhiteSpace(request.Version))
+    {
+        return Results.BadRequest(new { Error = "Version and content are required." });
+    }
+
+    var prompt = await repository.AddPromptAsync(new PromptTemplate
+    {
+        Id = Guid.NewGuid(),
+        AgentName = string.IsNullOrWhiteSpace(request.AgentName) ? "default" : request.AgentName,
+        Version = request.Version.Trim(),
+        Content = request.Content.Trim(),
+        IsActive = false
+    });
+
+    return Results.Ok(new { prompt.Id, prompt.AgentName, prompt.Version, prompt.Content, prompt.IsActive, prompt.CreatedAt });
+});
+
+promptsGroup.MapPost("/{id}/activate", async (Guid id, string? agent, IConversationRepository repository) =>
+{
+    var agentName = string.IsNullOrWhiteSpace(agent) ? "default" : agent;
+    var active = await repository.SetActivePromptAsync(agentName, id);
+    if (active == null) return Results.NotFound();
+    return Results.Ok(new { ActivePromptId = active.Id, active.AgentName, active.Version });
+});
+
 // Create DB Schema
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     db.Database.EnsureCreated();
+    db.Database.ExecuteSqlRaw("""
+        IF OBJECT_ID(N'[PromptTemplates]', N'U') IS NULL
+        BEGIN
+            CREATE TABLE [PromptTemplates](
+                [Id] uniqueidentifier NOT NULL,
+                [AgentName] nvarchar(450) NOT NULL,
+                [Version] nvarchar(450) NOT NULL,
+                [Content] nvarchar(max) NOT NULL,
+                [IsActive] bit NOT NULL,
+                [CreatedAt] datetime2 NOT NULL,
+                CONSTRAINT [PK_PromptTemplates] PRIMARY KEY ([Id])
+            );
+            CREATE UNIQUE INDEX [IX_PromptTemplates_AgentName_Version] ON [PromptTemplates] ([AgentName], [Version]);
+        END
+        """);
+
+    if (!db.PromptTemplates.Any())
+    {
+        db.PromptTemplates.Add(new PromptTemplate
+        {
+            Id = Guid.NewGuid(),
+            AgentName = "default",
+            Version = "v1",
+            Content = "You are an assistant specialized in workflow orchestration. Be concise, safe, and transparent about assumptions. Use tools when they help answer accurately.",
+            IsActive = true
+        });
+        db.SaveChanges();
+    }
 }
 
 app.Run();
@@ -166,6 +253,8 @@ class MockChatClient : IChatClient
 
     public object? GetService(Type serviceType, object? serviceKey = null) => null;
 }
+
+record CreatePromptRequest(string? AgentName, string Version, string Content);
 
 class FallbackChatClient : IChatClient
 {
