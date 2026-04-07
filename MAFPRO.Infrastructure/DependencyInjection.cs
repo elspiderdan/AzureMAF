@@ -11,8 +11,9 @@ public static class DependencyInjection
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddDbContext<AppDbContext>(options =>
-            options.UseSqlServer(configuration.GetConnectionString("DefaultConnection") 
-                              ?? "Data Source=mafpro.db"));
+            options.UseSqlServer(configuration.GetConnectionString("DefaultConnection") ?? "Data Source=mafpro.db")
+                   .EnableSensitiveDataLogging()
+                   .LogTo(Console.WriteLine, Microsoft.Extensions.Logging.LogLevel.Information));
 
         services.AddScoped<IConversationRepository, ConversationRepository>();
 
