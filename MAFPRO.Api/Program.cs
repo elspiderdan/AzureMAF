@@ -150,6 +150,62 @@ apiGroup.MapGet("/{id}/history", async (Guid id, IConversationRepository reposit
     return Results.Ok(new { Status = conversation.Status, Messages = conversation.Messages.Select(m => new { m.Role, m.Content }) });
 });
 
+var customApiGroup = app.MapGroup("/api/custom-workflows").WithTags("Custom Workflows");
+
+customApiGroup.MapPost("/{id}/chat", async (Guid id, string message, ICustomAgentOrchestrator orchestrator) =>
+{
+    try
+    {
+        var conversation = await orchestrator.ProcessWorkflowAsync(id, message);
+        return Results.Ok(new { Status = conversation.Status, Messages = conversation.Messages.Select(m => new { m.Role, m.Content }) });
+    }
+    catch (InvalidOperationException ex)
+    {
+        return Results.BadRequest(new { Error = ex.Message });
+    }
+});
+
+customApiGroup.MapPost("/{id}/approve", async (Guid id, ICustomAgentOrchestrator orchestrator) =>
+{
+    try
+    {
+        var conversation = await orchestrator.ApproveWorkflowAsync(id);
+        return Results.Ok(new { Status = conversation.Status, Messages = conversation.Messages.Select(m => new { m.Role, m.Content }) });
+    }
+    catch (InvalidOperationException ex)
+    {
+        return Results.BadRequest(new { Error = ex.Message });
+    }
+    catch (KeyNotFoundException)
+    {
+        return Results.NotFound();
+    }
+});
+
+customApiGroup.MapPost("/{id}/reject", async (Guid id, string? reason, ICustomAgentOrchestrator orchestrator) =>
+{
+    try
+    {
+        var conversation = await orchestrator.RejectWorkflowAsync(id, reason);
+        return Results.Ok(new { Status = conversation.Status, Messages = conversation.Messages.Select(m => new { m.Role, m.Content }) });
+    }
+    catch (InvalidOperationException ex)
+    {
+        return Results.BadRequest(new { Error = ex.Message });
+    }
+    catch (KeyNotFoundException)
+    {
+        return Results.NotFound();
+    }
+});
+
+customApiGroup.MapGet("/{id}/history", async (Guid id, IConversationRepository repository) =>
+{
+    var conversation = await repository.GetByIdAsync(id);
+    if (conversation == null) return Results.NotFound();
+    return Results.Ok(new { Status = conversation.Status, Messages = conversation.Messages.Select(m => new { m.Role, m.Content }) });
+});
+
 var promptsGroup = app.MapGroup("/api/prompts").WithTags("Prompts");
 
 promptsGroup.MapGet("/", async (string? agent, IConversationRepository repository) =>
@@ -213,7 +269,7 @@ using (var scope = app.Services.CreateScope())
         END
         """);
 
-    if (!db.PromptTemplates.Any())
+    if (!db.PromptTemplates.Any(p => p.AgentName == "default"))
     {
         db.PromptTemplates.Add(new PromptTemplate
         {
@@ -223,8 +279,21 @@ using (var scope = app.Services.CreateScope())
             Content = "You are an assistant specialized in workflow orchestration. Be concise, safe, and transparent about assumptions. Use tools when they help answer accurately.",
             IsActive = true
         });
-        db.SaveChanges();
     }
+
+    if (!db.PromptTemplates.Any(p => p.AgentName == "custom"))
+    {
+        db.PromptTemplates.Add(new PromptTemplate
+        {
+            Id = Guid.NewGuid(),
+            AgentName = "custom",
+            Version = "v1",
+            Content = "You are a custom-provider workflow agent operating through APIM. Be explicit, safe, and require human validation for risky operations.",
+            IsActive = true
+        });
+    }
+
+    db.SaveChanges();
 }
 
 app.Run();

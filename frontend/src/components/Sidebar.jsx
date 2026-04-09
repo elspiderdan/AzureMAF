@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Plus, Hash, LogIn } from 'lucide-react';
 
-function Sidebar({ onSelectWorkflow }) {
+function Sidebar({ onSelectWorkflow, selectedAgent, onSelectAgent }) {
   const [inputId, setInputId] = useState('');
 
   const generateUuid = () => {
@@ -27,6 +27,23 @@ function Sidebar({ onSelectWorkflow }) {
           AzureMAF <br/><span style={{fontSize: '1rem', color: 'var(--text-muted)'}}>Frontend</span>
         </h1>
         
+        <div style={{ display: 'grid', gap: '8px', marginBottom: '16px' }}>
+          <button
+            className="btn btn-outline"
+            onClick={() => onSelectAgent('default')}
+            style={{ borderColor: selectedAgent === 'default' ? 'var(--accent-cyan)' : undefined }}
+          >
+            Agente Azure
+          </button>
+          <button
+            className="btn btn-outline"
+            onClick={() => onSelectAgent('custom')}
+            style={{ borderColor: selectedAgent === 'custom' ? 'var(--accent-amethyst)' : undefined }}
+          >
+            Agente Custom APIM
+          </button>
+        </div>
+
         <button className="btn btn-primary" onClick={handleNew} style={{ width: '100%', marginBottom: '20px' }}>
           <Plus size={18} /> New Workflow
         </button>

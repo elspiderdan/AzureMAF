@@ -1,7 +1,12 @@
 import { ShieldAlert, Check, X } from 'lucide-react';
 
 function ApprovalBanner({ status, onApprove, onReject, isLoading }) {
-  if (status !== 'WaitingForHuman') return null;
+  const isWaiting = status === 'WaitingForHuman' || status?.startsWith('WaitingForHumanStep');
+  if (!isWaiting) return null;
+
+  const stepLabel = status?.startsWith('WaitingForHumanStep')
+    ? status.replace('WaitingForHumanStep', 'Paso ')
+    : 'Paso 1';
 
   return (
     <div className="glass-surface animate-slide-up" style={{
@@ -22,7 +27,7 @@ function ApprovalBanner({ status, onApprove, onReject, isLoading }) {
         <div>
           <h3 style={{ fontSize: '0.95rem', marginBottom: '2px', color: 'var(--text-primary)' }}>Acción Requerida</h3>
           <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', margin: 0 }}>
-            El agente ha pausado el flujo y requiere aprobación humana para continuar.
+            El agente ha pausado el flujo y requiere aprobación humana para continuar ({stepLabel}).
           </p>
         </div>
       </div>

@@ -11,3 +11,10 @@ public interface IAgentOrchestrator
     Task<Conversation> ApproveWorkflowAsync(Guid conversationId, CancellationToken cancellationToken = default);
     Task<Conversation> RejectWorkflowAsync(Guid conversationId, string? reason = null, CancellationToken cancellationToken = default);
 }
+
+public interface ICustomAgentOrchestrator
+{
+    Task<Conversation> ProcessWorkflowAsync(Guid conversationId, string userMessage, CancellationToken cancellationToken = default);
+    Task<Conversation> ApproveWorkflowAsync(Guid conversationId, CancellationToken cancellationToken = default);
+    Task<Conversation> RejectWorkflowAsync(Guid conversationId, string? reason = null, CancellationToken cancellationToken = default);
+}
